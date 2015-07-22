@@ -1,0 +1,15 @@
+language: generic
+sudo: false
+env:
+  global:
+  - PATH="$HOME/bin:$PATH"
+apt:
+  packages:
+  - unzip
+install:
+- ./setup
+- if [[ $GCE_JSON ]] ; then
+    echo "$GCE_JSON" > gce.json ;
+    export GOOGLE_ACCOUNT_FILE="$PWD/gce.json" ;
+  fi
+script: terraform plan
