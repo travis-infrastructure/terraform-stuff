@@ -2,6 +2,7 @@ gce.json
 .*env*
 
 *.tfstate*
+*.tfplan
 .terraform/
 
 envs/*.env
