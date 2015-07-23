@@ -4,7 +4,7 @@ set -o errexit
 INSTANCE_METADATA_URL="http://metadata.google.internal/computeMetadata/v1/instance"
 INSTANCE_HOSTNAME=$(curl -s "$INSTANCE_METADATA_URL/hostname" -H "Metadata-Flavor: Google")
 
-SSH_PASSPHRASE=$(dd if=/dev/urandom bs=1 count=32 2>/dev/null | base64)
+SSH_PASSPHRASE=$(openssl rand 16 -hex)
 ssh-keygen \
   -f /var/tmp/gce_rsa \
   -t rsa \
