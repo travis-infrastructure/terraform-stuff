@@ -1,1 +1,7 @@
+gce.json
+.*env*
+
 *.tfstate*
+.terraform/
+
+cloud-init/travis-worker-*
