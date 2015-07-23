@@ -25,7 +25,7 @@ export TRAVIS_WORKER_GCE_ACCOUNT_JSON=/var/tmp/gce.json
 export TRAVIS_WORKER_GCE_SSH_KEY_PASSPHRASE=$SSH_PASSPHRASE
 export TRAVIS_WORKER_GCE_KEY_PATH=/var/tmp/gce_rsa
 export TRAVIS_WORKER_GCE_PUB_KEY_PATH=/var/tmp/gce_rsa.pub
-export TRAVIS_WORKER_LIBRATO_SOURCE=worker-___SITE___-___ENVIRONMENT___-gce-${count}
+export TRAVIS_WORKER_LIBRATO_SOURCE=worker-___SITE___-___ENVIRONMENT___-gce-${number}
 
 EOF
 
