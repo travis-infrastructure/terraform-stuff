@@ -1,11 +1,16 @@
 language: generic
+
 sudo: false
+
 env:
   global:
   - PATH="$HOME/bin:$PATH"
+  - TF_VAR_travis_worker_image="travis-worker-1234567890"
+
 apt:
   packages:
   - unzip
+
 install:
 - mkdir -p ~/bin
 - ./bin/setup
@@ -13,6 +18,7 @@ install:
     echo "$GCE_JSON" > gce.json ;
     export GOOGLE_ACCOUNT_FILE="$PWD/gce.json" ;
   fi
+
 script:
 - terraform get --update
 - terraform plan
