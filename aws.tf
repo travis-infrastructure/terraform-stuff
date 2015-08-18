@@ -1,5 +1,8 @@
 provider "aws" {}
 
+variable "internal_zone_id" {}
+variable "external_zone_id" {}
+
 resource "aws_route53_record" "macstadium_worker_jupiter_brain" {
   zone_id = "${var.external_zone_id}"
   name = "worker-jupiter-brain.macstadium-us-se-1.travisci.net"
