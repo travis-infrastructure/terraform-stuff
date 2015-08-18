@@ -12,8 +12,11 @@ if ! command -v terraform ; then
   unzip "${TMPDIR}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 fi
 
-if [[ $GCE_JSON ]] ; then
+if [[ -n $GCE_JSON ]] ; then
+  echo Writing GCE json to $PWD/gce.json
   cat > gce.json <<EOF
 $GCE_JSON
 EOF
+else
+  echo No \$GCE_JSON set
 fi

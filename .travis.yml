@@ -2,6 +2,10 @@ language: generic
 
 sudo: false
 
+cache:
+  directories:
+  - $HOME/bin
+
 env:
   global:
   - PATH="$HOME/bin:$PATH"
