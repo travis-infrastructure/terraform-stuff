@@ -7,4 +7,3 @@ gce.json
 
 envs/*.env
 cloud-init/travis-worker*
-terraform.tfvars
