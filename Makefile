@@ -4,6 +4,8 @@ CLOUD_INITS := \
 	cloud-init/travis-worker-gce-org-prod \
 	cloud-init/travis-worker-gce-org-staging
 
+TERRAFORM_TFVARS ?= terraform.tfvars
+
 SED ?= sed
 TRVS ?= trvs
 GOOGLE_ACCOUNT_FILE ?= gce.json
@@ -11,12 +13,15 @@ ENV_GENERATE_CMD ?= $(TRVS) generate-config -p travis_worker -f env
 ENV_EXPORT_SED ?= $(SED) 's/^/export /;s/=/"/;s/$$/"/'
 
 .PHONY: all
-all: $(CLOUD_INITS)
+all: $(CLOUD_INITS) $(TERRAFORM_TFVARS)
 
 .PHONY: clean
 clean:
 	$(RM) envs/*.env
 	$(RM) $(CLOUD_INITS)
+
+$(TERRAFORM_TFVARS):
+	bin/generate-terraform-tfvars > $@
 
 cloud-init/travis-worker-gce-%: travis-worker-gce.sh.in envs/travis-worker-gce-%.env
 	bin/render-gce-travis-worker-cloud-init $< $@ > $@

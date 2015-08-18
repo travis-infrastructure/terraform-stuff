@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if ! hash jq 2>/dev/null; then
+	echo "$0: jq not found" >&2
+	exit 2
+fi
+
+function jsonstring() {
+	jq -R . <<< "$@"
+}
+
+
+function setvar() {
+	if [[ -z "${!2}" ]]; then
+		echo "$0: requires the environment variable $2 to be set" >&2
+		exit 1
+	fi
+
+	printf "%s = %s\n" "$1" "$(jsonstring "${!2}")"
+}
+
+setvar internal_zone_id VPC_INTERNAL_ZONE_ID
+setvar external_zone_id VPC_EXTERNAL_ZONE_ID
