@@ -1,15 +1,24 @@
 language: generic
+
 sudo: false
+
+cache:
+  directories:
+  - $HOME/bin
+
 env:
   global:
   - PATH="$HOME/bin:$PATH"
+  - GOOGLE_ACCOUNT_FILE="$TRAVIS_BUILD_DIR/gce.json"
+
 apt:
   packages:
   - unzip
+
 install:
+- mkdir -p ~/bin
 - ./bin/setup
-- if [[ $GCE_JSON ]] ; then
-    echo "$GCE_JSON" > gce.json ;
-    export GOOGLE_ACCOUNT_FILE="$PWD/gce.json" ;
-  fi
-script: terraform plan
+
+script:
+- terraform get --update
+- terraform plan

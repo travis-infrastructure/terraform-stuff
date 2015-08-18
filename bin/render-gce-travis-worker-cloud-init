@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+cd $(dirname $(dirname ${BASH_SOURCE[0]}))
+
+usage() {
+  cat <<EOF
+Usage: $(basename $0) <template-file> <cloud-init-file>
+
+Uses sed to "render" a "template".  Wow.
+
+An environment variable file matching the basename of the cloud init file must
+be present in the "envs" directory as well as the \$GOOGLE_ACCOUNT_FILE var.
+EOF
+}
+
+case $1 in
+  -h|--help)
+    usage
+    exit 0
+    ;;
+esac
+
+if [ $# -lt 2 ] ; then
+  usage
+  exit 1
+fi
+
+TEMPLATE_FILE=$1
+shift
+CLOUD_INIT_FILE=$1
+shift
+
+: ${ENV_FILE:=envs/$(basename ${CLOUD_INIT_FILE}).env}
+
+if [ ! -f ${ENV_FILE} ] ; then
+  echo Missing ${ENV_FILE} file
+  exit 1
+fi
+
+if [ "x${GOOGLE_ACCOUNT_FILE}" = "x" ] || [ ! -f ${GOOGLE_ACCOUNT_FILE} ] ; then
+  echo Missing \$GOOGLE_ACCOUNT_FILE file
+  exit 1
+fi
+
+IFS=- read -a nameparts <<< "$(basename ${CLOUD_INIT_FILE})"
+sed \
+  -e "/___ENV___/r ${ENV_FILE}" \
+  -e "/___ENV___/d" \
+  -e "/___GCE_JSON___/r ${GOOGLE_ACCOUNT_FILE}" \
+  -e "/___GCE_JSON___/d" \
+  -e "s/___SITE___/${nameparts[2]}/g" \
+  -e "s/___ENVIRONMENT___/${nameparts[3]}/g" \
+  < "$TEMPLATE_FILE"
