@@ -18,21 +18,8 @@ clean:
 	$(RM) envs/*.env
 	$(RM) $(CLOUD_INITS)
 
-cloud-init/travis-worker-gce-%: travis-worker.sh.in envs/travis-worker-gce-%.env
-	if [ ! -f envs/$(notdir $@).env ] ; then echo Missing envs/$(notdir $@).env file ; exit 1 ; fi ; \
-	if [ "x$(GOOGLE_ACCOUNT_FILE)" = "x" ] || [ ! -f $(GOOGLE_ACCOUNT_FILE) ] ; \
-		then echo Missing $$GOOGLE_ACCOUNT_FILE file ; \
-		exit 1 ; \
-	fi ; \
-	IFS=- read -a nameparts <<< "$(notdir $@)" ; \
-	$(SED) \
-		-e "/___ENV___/r envs/$(notdir $@).env" \
-		-e "/___ENV___/d" \
-		-e "/___GCE_JSON___/r $(GOOGLE_ACCOUNT_FILE)" \
-		-e "/___GCE_JSON___/d" \
-		-e "s/___SITE___/$${nameparts[2]}/g" \
-		-e "s/___ENVIRONMENT___/$${nameparts[3]}/g" \
-		< $< > $@
+cloud-init/travis-worker-gce-%: travis-worker-gce.sh.in envs/travis-worker-gce-%.env
+	bin/render-gce-travis-worker-cloud-init $< $@ > $@
 
 envs/travis-worker-gce-com-prod.env:
 	$(ENV_GENERATE_CMD) --pro gce-workers production | $(ENV_EXPORT_SED) > $@
