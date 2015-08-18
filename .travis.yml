@@ -5,7 +5,6 @@ sudo: false
 env:
   global:
   - PATH="$HOME/bin:$PATH"
-  - TF_VAR_travis_worker_image="travis-worker-1234567890"
 
 apt:
   packages:
