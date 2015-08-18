@@ -11,3 +11,9 @@ if ! command -v terraform ; then
   cd "${PREFIX}/bin"
   unzip "${TMPDIR}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
 fi
+
+if [[ $GCE_JSON ]] ; then
+  cat > gce.json <<EOF
+$GCE_JSON
+EOF
+fi

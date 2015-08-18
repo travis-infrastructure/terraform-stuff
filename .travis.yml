@@ -5,6 +5,7 @@ sudo: false
 env:
   global:
   - PATH="$HOME/bin:$PATH"
+  - GOOGLE_ACCOUNT_FILE="$PWD/gce.json"
 
 apt:
   packages:
@@ -13,12 +14,6 @@ apt:
 install:
 - mkdir -p ~/bin
 - ./bin/setup
-- if [[ $GCE_JSON ]] ; then
-    cat <<EOF > gce.json ;
-$GCE_JSON
-EOF
-    export GOOGLE_ACCOUNT_FILE="$PWD/gce.json" ;
-  fi
 
 script:
 - terraform get --update
