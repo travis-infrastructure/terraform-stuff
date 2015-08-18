@@ -6,10 +6,12 @@ set -o errexit
 : ${PREFIX:=$HOME}
 
 if ! command -v terraform ; then
-  cd "${TMPDIR}"
+  pushd "${TMPDIR}"
   curl -sSLO "https://dl.bintray.com/mitchellh/terraform/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-  cd "${PREFIX}/bin"
+  popd
+  pushd "${PREFIX}/bin"
   unzip "${TMPDIR}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+  popd
 fi
 
 if [[ -n $GCE_JSON ]] ; then
