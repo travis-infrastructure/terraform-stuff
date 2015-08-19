@@ -39,16 +39,21 @@ if [ ! -f ${ENV_FILE} ] ; then
   exit 1
 fi
 
-if [ "x${GOOGLE_ACCOUNT_FILE}" = "x" ] || [ ! -f ${GOOGLE_ACCOUNT_FILE} ] ; then
+if [[ "x${GOOGLE_ACCOUNT_FILE}" = "x" ]] ; then
   echo Missing \$GOOGLE_ACCOUNT_FILE file
   exit 1
 fi
+
+trap 'rm -f tmp.gce.json' EXIT QUIT INT TERM
+cat > tmp.gce.json <<EOF
+$GOOGLE_ACCOUNT_FILE
+EOF
 
 IFS=- read -a nameparts <<< "$(basename ${CLOUD_INIT_FILE})"
 sed \
   -e "/___ENV___/r ${ENV_FILE}" \
   -e "/___ENV___/d" \
-  -e "/___GCE_JSON___/r ${GOOGLE_ACCOUNT_FILE}" \
+  -e "/___GCE_JSON___/r tmp.gce.json/" \
   -e "/___GCE_JSON___/d" \
   -e "s/___SITE___/${nameparts[2]}/g" \
   -e "s/___ENVIRONMENT___/${nameparts[3]}/g" \
