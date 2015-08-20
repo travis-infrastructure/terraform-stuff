@@ -9,7 +9,6 @@ cache:
 env:
   global:
   - PATH="$HOME/bin:$PATH"
-  - GOOGLE_ACCOUNT_FILE="$(cat $TRAVIS_BUILD_DIR/gce.json)"
 
 apt:
   packages:
