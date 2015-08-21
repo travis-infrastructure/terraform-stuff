@@ -31,3 +31,26 @@ module "gce_com_staging_workers" {
   environment = "staging"
   image = "${var.travis_worker_image}"
 }
+
+resource "google_compute_instance" "ubuntu_trusty_micro_playground" {
+  count = 1
+  name = "ubuntu-trusty-micro-playground"
+  machine_type = "f1-micro"
+  zone = "us-central1-f"
+  tags = ["playground"]
+
+  can_ip_forward = false
+
+  disk {
+    auto_delete = true
+    image = "ubuntu-1404-trusty-v20150805"
+    type = "pd-standard"
+  }
+
+  network_interface {
+    network = "default"
+    access_config {
+      # Ephemeral IP
+    }
+  }
+}
