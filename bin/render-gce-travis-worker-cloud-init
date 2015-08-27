@@ -53,7 +53,7 @@ IFS=- read -a nameparts <<< "$(basename ${CLOUD_INIT_FILE})"
 sed \
   -e "/___ENV___/r ${ENV_FILE}" \
   -e "/___ENV___/d" \
-  -e "/___GCE_JSON___/r tmp.gce.json/" \
+  -e "/___GCE_JSON___/r tmp.gce.json" \
   -e "/___GCE_JSON___/d" \
   -e "s/___SITE___/${nameparts[2]}/g" \
   -e "s/___ENVIRONMENT___/${nameparts[3]}/g" \
