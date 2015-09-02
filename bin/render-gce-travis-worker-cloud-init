@@ -33,9 +33,15 @@ CLOUD_INIT_FILE=$1
 shift
 
 : ${ENV_FILE:=envs/$(basename ${CLOUD_INIT_FILE}).env}
+: ${NODE_FILE:=nodes/$(basename ${CLOUD_INIT_FILE}).json}
 
 if [ ! -f ${ENV_FILE} ] ; then
   echo Missing ${ENV_FILE} file
+  exit 1
+fi
+
+if [ ! -f ${NODE_FILE} ] ; then
+  echo Missing ${NODE_FILE} file
   exit 1
 fi
 
@@ -53,6 +59,8 @@ IFS=- read -a nameparts <<< "$(basename ${CLOUD_INIT_FILE})"
 sed \
   -e "/___ENV___/r ${ENV_FILE}" \
   -e "/___ENV___/d" \
+  -e "/___NODE_JSON___/r ${NODE_FILE}" \
+  -e "/___NODE_JSON___/d" \
   -e "/___GCE_JSON___/r tmp.gce.json" \
   -e "/___GCE_JSON___/d" \
   -e "s/___SITE___/${nameparts[2]}/g" \

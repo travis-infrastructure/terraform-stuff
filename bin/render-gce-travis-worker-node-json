@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+
+require 'json'
+
+class NodeJSONRenderer
+  def self.run!(env_file)
+    new(env_file).run!
+  end
+
+  def initialize(env_file)
+    @env_file = env_file
+  end
+
+  def run!
+    node_json = {
+      run_list: %w(recipe[travis_go_worker]),
+      travis: {
+        worker: {
+          environment: load_env(File.read(env_file)),
+        }
+      }
+    }
+
+    if ENV['TRAVIS_WORKER_BRANCH']
+      node_json[:travis][:worker][:branch] = ENV['TRAVIS_WORKER_BRANCH']
+    end
+
+    puts JSON.pretty_generate(node_json)
+
+    0
+  end
+
+  private
+
+  attr_reader :env_file
+
+  def load_env(env_string)
+    env = {}
+
+    env_string.split($/).each do |line|
+      line = line.strip
+      next if line.empty? || line =~ /^#/
+      key, value = line.sub(/export\s+/, '').split('=', 2).map do |s|
+        s.strip.sub(/^"/, '').sub(/"$/, '')
+      end
+      env[key] = (value || '').gsub(/\\ /, ' ')
+    end
+
+    env
+  end
+end
+
+exit(NodeJSONRenderer.run!(ARGV.first)) if $PROGRAM_NAME == __FILE__
