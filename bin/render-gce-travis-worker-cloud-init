@@ -63,6 +63,4 @@ sed \
   -e "/___NODE_JSON___/d" \
   -e "/___GCE_JSON___/r tmp.gce.json" \
   -e "/___GCE_JSON___/d" \
-  -e "s/___SITE___/${nameparts[2]}/g" \
-  -e "s/___ENVIRONMENT___/${nameparts[3]}/g" \
   < "$TEMPLATE_FILE"
