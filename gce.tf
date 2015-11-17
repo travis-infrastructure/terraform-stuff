@@ -13,7 +13,7 @@ module "gce_org_staging_workers" {
   instance_count = 1
   site = "org"
   environment = "staging"
-  image = "${atlas_artifact.worker.id}"
+  image = "${atlas_artifact.travis-worker-gce-image.id}"
 }
 
 module "gce_com_prod_workers" {
@@ -29,7 +29,7 @@ module "gce_com_staging_workers" {
   instance_count = 1
   site = "com"
   environment = "staging"
-  image = "${atlas_artifact.worker.id}"
+  image = "${atlas_artifact.travis-worker-gce-image.id}"
 }
 
 resource "google_compute_instance" "ubuntu_trusty_micro_playground" {
