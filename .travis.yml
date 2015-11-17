@@ -23,4 +23,4 @@ script:
 - make clean all
 - terraform get --update
 - git diff --quiet --exit-code
-- git diff --cached -quiet --exit-code
+- git diff --cached --quiet --exit-code
