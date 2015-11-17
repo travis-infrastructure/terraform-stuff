@@ -9,6 +9,7 @@ cache:
 env:
   global:
   - PATH="$HOME/bin:$PATH"
+  - ENV_GENERATE_CMD="echo NOT REALLY"
 
 apt:
   packages:
@@ -19,5 +20,6 @@ install:
 - ./bin/setup
 
 script:
+- make clean all
 - terraform get --update
 - terraform plan
