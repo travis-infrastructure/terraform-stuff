@@ -22,4 +22,5 @@ install:
 script:
 - make clean all
 - terraform get --update
-- terraform plan
+- git diff --quiet --exit-code
+- git diff --cached -quiet --exit-code
