@@ -38,7 +38,9 @@ export TRAVIS_WORKER_LIBRATO_SOURCE=$INSTANCE_SHORT_HOSTNAME
 
 EOF
 
-chown travis:travis /etc/default/travis-worker /var/tmp/gce*
+shopt -s nullglob
+
+chown -R travis:travis /etc/default/travis-worker /var/tmp/*
 chmod 0640 /etc/default/travis-worker /var/tmp/gce*
 
 stop travis-worker || true
