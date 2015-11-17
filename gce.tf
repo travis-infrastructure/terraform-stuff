@@ -5,7 +5,7 @@ module "gce_org_prod_workers" {
   instance_count = 3
   site = "org"
   environment = "prod"
-  image = "${var.travis_worker_image}"
+  image = "${atlas_artifact.travis-worker-gce-image.id}"
 }
 
 module "gce_org_staging_workers" {
@@ -21,7 +21,7 @@ module "gce_com_prod_workers" {
   instance_count = 3
   site = "com"
   environment = "prod"
-  image = "${var.travis_worker_image}"
+  image = "${atlas_artifact.travis-worker-gce-image.id}"
 }
 
 module "gce_com_staging_workers" {
@@ -43,7 +43,7 @@ resource "google_compute_instance" "ubuntu_trusty_micro_playground" {
 
   disk {
     auto_delete = true
-    image = "ubuntu-1404-trusty-v20150805"
+    image = "ubuntu-1404-trusty-v20150909a"
     type = "pd-standard"
   }
 
