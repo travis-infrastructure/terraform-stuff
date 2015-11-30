@@ -11,7 +11,7 @@ Usage: $(basename $0) <template-file> <cloud-init-file>
 Uses sed to "render" a "template".  Wow.
 
 An environment variable file matching the basename of the cloud init file must
-be present in the "envs" directory as well as the \$GOOGLE_ACCOUNT_FILE var.
+be present in the "envs" directory as well as the \$GOOGLE_CREDENTIALS var.
 EOF
 }
 
@@ -45,14 +45,14 @@ if [ ! -f ${NODE_FILE} ] ; then
   exit 1
 fi
 
-if [[ "x${GOOGLE_ACCOUNT_FILE}" = "x" ]] ; then
-  echo Missing \$GOOGLE_ACCOUNT_FILE file
+if [[ "x${GOOGLE_CREDENTIALS}" = "x" ]] ; then
+  echo Missing \$GOOGLE_CREDENTIALS file
   exit 1
 fi
 
 trap 'rm -f tmp.gce.json' EXIT QUIT INT TERM
 cat > tmp.gce.json <<EOF
-$GOOGLE_ACCOUNT_FILE
+$GOOGLE_CREDENTIALS
 EOF
 
 IFS=- read -a nameparts <<< "$(basename ${CLOUD_INIT_FILE})"
