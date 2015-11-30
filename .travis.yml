@@ -9,7 +9,7 @@ cache:
 env:
   global:
   - PATH="$HOME/bin:$PATH"
-  - GOOGLE_ACCOUNT_FILE="$(cat $TRAVIS_BUILD_DIR/gce.json)"
+  - ENV_GENERATE_CMD="echo NOT REALLY"
 
 apt:
   packages:
@@ -20,5 +20,7 @@ install:
 - ./bin/setup
 
 script:
+- make clean all
 - terraform get --update
-- terraform plan
+- git diff --quiet --exit-code
+- git diff --cached --quiet --exit-code

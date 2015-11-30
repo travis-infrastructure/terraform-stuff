@@ -3,6 +3,7 @@ set -o errexit
 
 INSTANCE_METADATA_URL="http://metadata.google.internal/computeMetadata/v1/instance"
 INSTANCE_HOSTNAME=$(curl -s "$INSTANCE_METADATA_URL/hostname" -H "Metadata-Flavor: Google")
+INSTANCE_SHORT_HOSTNAME=$(echo $INSTANCE_HOSTNAME | awk -F. '{ print $1 }')
 
 SSH_PASSPHRASE=$(openssl rand 32 -hex)
 ssh-keygen \
@@ -18,6 +19,14 @@ ___GCE_JSON___
 
 EOF
 
+cat > /etc/default/travis-worker-local <<EOF
+export TRAVIS_WORKER_GCE_ACCOUNT_JSON=/var/tmp/gce.json
+export TRAVIS_WORKER_GCE_SSH_KEY_PASSPHRASE=$SSH_PASSPHRASE
+export TRAVIS_WORKER_GCE_SSH_KEY_PATH=/var/tmp/gce_rsa
+export TRAVIS_WORKER_GCE_SSH_PUB_KEY_PATH=/var/tmp/gce_rsa.pub
+export TRAVIS_WORKER_LIBRATO_SOURCE=$INSTANCE_SHORT_HOSTNAME
+EOF
+
 cat > /etc/default/travis-worker <<EOF
 ___ENV___
 
@@ -25,12 +34,20 @@ export TRAVIS_WORKER_GCE_ACCOUNT_JSON=/var/tmp/gce.json
 export TRAVIS_WORKER_GCE_SSH_KEY_PASSPHRASE=$SSH_PASSPHRASE
 export TRAVIS_WORKER_GCE_SSH_KEY_PATH=/var/tmp/gce_rsa
 export TRAVIS_WORKER_GCE_SSH_PUB_KEY_PATH=/var/tmp/gce_rsa.pub
-export TRAVIS_WORKER_LIBRATO_SOURCE=worker-___SITE___-___ENVIRONMENT___-gce-${number}
+export TRAVIS_WORKER_LIBRATO_SOURCE=$INSTANCE_SHORT_HOSTNAME
 
 EOF
 
-chown travis:travis /etc/default/travis-worker /var/tmp/gce*
+shopt -s nullglob
+
+chown -R travis:travis /etc/default/travis-worker /var/tmp/*
 chmod 0640 /etc/default/travis-worker /var/tmp/gce*
 
 stop travis-worker || true
 start travis-worker || true
+
+mkdir -p /etc/chef
+
+cat > /etc/chef/node.json <<EOF
+___NODE_JSON___
+EOF
