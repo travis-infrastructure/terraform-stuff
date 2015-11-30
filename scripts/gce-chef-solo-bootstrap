@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o xtrace
+
+if ! command -v chef-solo ; then
+  curl -sL https://www.opscode.com/chef/install.sh | bash
+fi
+
+pushd /var/tmp
+
+rm -rf travis-cookbooks
+git clone https://github.com/travis-ci/travis-cookbooks.git
+
+rm -rf packer-templates
+git clone https://github.com/travis-infrastructure/packer-templates.git
+
+mkdir -p /etc/chef
+
+cat > /etc/chef/node.json <<EOF
+{
+  "travis": {
+    "worker": {
+      "branch": "master",
+      "disable_reconfiguration": true
+    }
+  },
+  "travis_internal_base": {
+    "opsmatic_disabled": true
+  },
+  "papertrail": {
+    "remote_port": $(cat /var/tmp/papertrail-remote-port || echo 9999)
+  },
+  "run_list": ["recipe[travis_worker_wrapper]"]
+}
+EOF
+
+cat > /etc/chef/solo.rb <<EOF
+cookbook_path %w(
+  /var/tmp/packer-templates/cookbooks
+  /var/tmp/travis-cookbooks/worker_host
+  /var/tmp/travis-cookbooks/ci_environment
+)
+json_attribs '/etc/chef/node.json'
+EOF
