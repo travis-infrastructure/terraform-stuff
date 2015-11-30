@@ -2,7 +2,7 @@ provider "google" {}
 
 module "gce_org_prod_workers" {
   source = "github.com/travis-infrastructure/tf_gce_travis_worker"
-  instance_count = 3
+  instance_count = 6
   site = "org"
   environment = "prod"
   image = "${atlas_artifact.travis-worker-gce-image.id}"
