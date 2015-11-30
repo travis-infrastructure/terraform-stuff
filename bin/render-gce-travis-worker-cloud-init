@@ -55,7 +55,6 @@ cat > tmp.gce.json <<EOF
 $GOOGLE_CREDENTIALS
 EOF
 
-IFS=- read -a nameparts <<< "$(basename ${CLOUD_INIT_FILE})"
 sed \
   -e "/___ENV___/r ${ENV_FILE}" \
   -e "/___ENV___/d" \
