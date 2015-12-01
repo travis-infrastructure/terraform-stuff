@@ -24,7 +24,7 @@ clean:
 	$(RM) envs/*.env
 	$(RM) $(CLOUD_INITS)
 
-cloud-init/travis-worker-gce-%: travis-worker-gce.sh.in nodes/travis-worker-gce-%.json envs/travis-worker-gce-%.env
+cloud-init/travis-worker-gce-%: travis-worker-gce.bash.in nodes/travis-worker-gce-%.json envs/travis-worker-gce-%.env
 	bin/render-gce-travis-worker-cloud-init $< $@ > $@
 
 nodes/travis-worker-gce-%.json: envs/travis-worker-gce-%.env

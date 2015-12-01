@@ -11,6 +11,6 @@ expected to be generated.  This is because the secrets live elsewhere.
 ## `travis-worker`
 
 The minimum inputs needed for a given travis-worker `./cloud-init` file are the
-corresponding file in `./envs` and the `travis-worker.sh.in` file.  The env file
+corresponding file in `./envs` and the `travis-worker.bash.in` file.  The env file
 must be provided and should be line-separated environment variable declarations
 suitable for an `/etc/default/travis-worker` file.
