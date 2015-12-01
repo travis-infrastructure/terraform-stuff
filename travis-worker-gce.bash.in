@@ -65,7 +65,7 @@ EOF
 
 __setup_papertrail_rsyslog() {
   source /etc/default/travis-worker
-  local pt_port="${TRAVIS_WORKER_GCE_PAPERTRAIL_REMOTE_PORT}"
+  local pt_port="${TRAVIS_WORKER_PAPERTRAIL_REMOTE_PORT}"
 
   if [[ ! "${pt_port}" ]] ; then
     return
