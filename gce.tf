@@ -23,6 +23,7 @@ module "gce_com_prod_workers" {
   instance_count = 3
   site = "com"
   environment = "prod"
+  zone = "us-central1-b"
   image = "${atlas_artifact.travis-worker-gce-image.id}"
 }
 
@@ -31,6 +32,7 @@ module "gce_com_staging_workers" {
   instance_count = 1
   site = "com"
   environment = "staging"
+  zone = "us-central1-b"
   image = "${atlas_artifact.travis-worker-gce-image.id}"
 }
 
