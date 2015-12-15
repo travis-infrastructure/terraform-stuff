@@ -54,10 +54,7 @@ __write_travis_worker_configs() {
     cat > $f <<EOF
 ___ENV___
 
-export TRAVIS_WORKER_GCE_ACCOUNT_JSON=/var/tmp/gce.json
 export TRAVIS_WORKER_GCE_SSH_KEY_PASSPHRASE=${ssh_passphrase}
-export TRAVIS_WORKER_GCE_SSH_KEY_PATH=/var/tmp/gce_rsa
-export TRAVIS_WORKER_GCE_SSH_PUB_KEY_PATH=/var/tmp/gce_rsa.pub
 export TRAVIS_WORKER_LIBRATO_SOURCE=${instance_short_hostname}
 EOF
   done
