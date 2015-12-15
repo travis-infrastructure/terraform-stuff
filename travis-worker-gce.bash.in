@@ -8,12 +8,11 @@ main() {
   local instance_hostname="$(
     curl -s "${md_url}/hostname" -H "Metadata-Flavor: Google"
   )"
-  local instance_short_hostname="${instance_hostname%%.*}"
   local ssh_passphrase=$(openssl rand 32 -hex)
 
   __gen_ssh_key /var/tmp/gce_rsa "${instance_hostname}" "${ssh_passphrase}"
   __write_gce_json /var/tmp/gce.json
-  __write_travis_worker_configs "${instance_short_hostname}" "${ssh_passphrase}"
+  __write_travis_worker_configs "${ssh_passphrase}"
 
   __setup_papertrail_rsyslog
 
@@ -47,17 +46,15 @@ EOF
 }
 
 __write_travis_worker_configs() {
-  local instance_short_hostname="${1}"
-  local ssh_passphrase="${2}"
+  local ssh_passphrase="${1}"
 
-  for f in /etc/default/travis-worker-local /etc/default/travis-worker ; do
-    cat > $f <<EOF
+  cat > /etc/default/travis-worker <<EOF
 ___ENV___
-
-export TRAVIS_WORKER_GCE_SSH_KEY_PASSPHRASE=${ssh_passphrase}
-export TRAVIS_WORKER_LIBRATO_SOURCE=${instance_short_hostname}
 EOF
-  done
+
+  cat > /etc/default/travis-worker-local <<EOF
+export TRAVIS_WORKER_GCE_SSH_KEY_PASSPHRASE=${ssh_passphrase}
+EOF
 }
 
 __setup_papertrail_rsyslog() {
