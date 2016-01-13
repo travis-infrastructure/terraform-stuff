@@ -1,43 +1,9 @@
-NODE_JSONS := \
-	nodes/travis-worker-gce-com-prod.json \
-	nodes/travis-worker-gce-com-staging.json \
-	nodes/travis-worker-gce-org-prod.json \
-	nodes/travis-worker-gce-org-staging.json
-
-CLOUD_INITS := \
-	cloud-init/travis-worker-gce-com-prod \
-	cloud-init/travis-worker-gce-com-staging \
-	cloud-init/travis-worker-gce-org-prod \
-	cloud-init/travis-worker-gce-org-staging
-
-SED ?= sed
-TRVS ?= trvs
-GOOGLE_CREDENTIALS ?= gce.json
-ENV_GENERATE_CMD ?= $(TRVS) generate-config -p travis_worker -f env
-ENV_EXPORT_SED ?= $(SED) 's/^/export /;s/=/="/;s/$$/"/'
-
 .PHONY: all
-all: $(NODE_JSONS) $(CLOUD_INITS) $(TERRAFORM_TFVARS)
+all:
+	$(MAKE) all -C staging
+	$(MAKE) all -C production
 
 .PHONY: clean
 clean:
-	$(RM) envs/*.env
-	$(RM) $(CLOUD_INITS)
-
-cloud-init/travis-worker-gce-%: travis-worker-gce.bash.in nodes/travis-worker-gce-%.json envs/travis-worker-gce-%.env
-	bin/render-gce-travis-worker-cloud-init $< $@ > $@
-
-nodes/travis-worker-gce-%.json: envs/travis-worker-gce-%.env
-	bin/render-gce-travis-worker-node-json $< > $@
-
-envs/travis-worker-gce-com-prod.env:
-	$(ENV_GENERATE_CMD) --pro gce-workers production | $(ENV_EXPORT_SED) > $@
-
-envs/travis-worker-gce-com-staging.env:
-	$(ENV_GENERATE_CMD) --pro gce-workers staging | $(ENV_EXPORT_SED) > $@
-
-envs/travis-worker-gce-org-prod.env:
-	$(ENV_GENERATE_CMD) gce-workers production | $(ENV_EXPORT_SED) > $@
-
-envs/travis-worker-gce-org-staging.env:
-	$(ENV_GENERATE_CMD) gce-workers staging | $(ENV_EXPORT_SED) > $@
+	$(MAKE) clean -C staging
+	$(MAKE) clean -C production
