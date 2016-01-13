@@ -21,6 +21,7 @@ install:
 
 script:
 - make clean all
-- terraform get --update
+- pushd staging && terraform get --update ; popd
+- pushd production && terraform get --update ; popd
 - git diff --quiet --exit-code
 - git diff --cached --quiet --exit-code
