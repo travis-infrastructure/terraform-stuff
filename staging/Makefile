@@ -1,10 +1,6 @@
-NODE_JSONS := \
-	nodes/travis-worker-gce-com-staging.json \
-	nodes/travis-worker-gce-org-staging.json
+NODE_JSONS :=
 
-CLOUD_INITS := \
-	cloud-init/travis-worker-gce-com-staging \
-	cloud-init/travis-worker-gce-org-staging
+CLOUD_INITS :=
 
 .PHONY: all
 all: $(NODE_JSONS) $(CLOUD_INITS)
