@@ -5,6 +5,6 @@ gce.json
 *.tfplan
 .terraform/
 
-envs/*.env
-cloud-init/travis-worker*
-nodes/*.json
+**/envs/*.env
+**/cloud-init/travis-worker*
+**/nodes/*.json

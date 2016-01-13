@@ -2,8 +2,6 @@
 
 set -o errexit
 
-cd $(dirname $(dirname ${BASH_SOURCE[0]}))
-
 usage() {
   cat <<EOF
 Usage: $(basename $0) <template-file> <cloud-init-file>
@@ -11,7 +9,8 @@ Usage: $(basename $0) <template-file> <cloud-init-file>
 Uses sed to "render" a "template".  Wow.
 
 An environment variable file matching the basename of the cloud init file must
-be present in the "envs" directory as well as the \$GOOGLE_CREDENTIALS var.
+be present in the "envs" directory as well as the
+\$TRAVIS_WORKER_GOOGLE_CREDENTIALS var.
 EOF
 }
 
@@ -36,23 +35,23 @@ shift
 : ${NODE_FILE:=nodes/$(basename ${CLOUD_INIT_FILE}).json}
 
 if [ ! -f ${ENV_FILE} ] ; then
-  echo Missing ${ENV_FILE} file
+  echo Missing ${ENV_FILE} file >&2
   exit 1
 fi
 
 if [ ! -f ${NODE_FILE} ] ; then
-  echo Missing ${NODE_FILE} file
+  echo Missing ${NODE_FILE} file >&2
   exit 1
 fi
 
-if [[ "x${GOOGLE_CREDENTIALS}" = "x" ]] ; then
-  echo Missing \$GOOGLE_CREDENTIALS file
+if [[ "x${TRAVIS_WORKER_GOOGLE_CREDENTIALS}" = "x" ]] ; then
+  echo Missing \$TRAVIS_WORKER_GOOGLE_CREDENTIALS file >&2
   exit 1
 fi
 
 trap 'rm -f tmp.gce.json' EXIT QUIT INT TERM
 cat > tmp.gce.json <<EOF
-$GOOGLE_CREDENTIALS
+$TRAVIS_WORKER_GOOGLE_CREDENTIALS
 EOF
 
 sed \
