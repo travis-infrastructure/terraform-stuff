@@ -7,3 +7,8 @@ all:
 clean:
 	$(MAKE) clean -C staging
 	$(MAKE) clean -C production
+
+.PHONY: terraform-config
+terraform-config:
+	$(MAKE) terraform-config -C staging
+	$(MAKE) terraform-config -C production
