@@ -6,6 +6,6 @@ resource "heroku_addon" "rate_limit_redis" {
     plan = "heroku-redis:premium-0"
 }
 
-output "rate_limit_redis_addon_name" {
-    value = "${heroku_addon.rate_limit_redis.name}"
+output "rate_limit_redis_url_env_var" {
+    value = "${heroku_addon.rate_limit_redis.config_vars.0}"
 }
