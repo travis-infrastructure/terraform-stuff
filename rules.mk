@@ -28,5 +28,11 @@ envs/travis-worker-gce-com-staging.env:
 envs/travis-worker-gce-org-prod.env:
 	$(ENV_GENERATE_CMD) gce-workers production | $(ENV_EXPORT_SED) > $(shell pwd)/$@
 
+envs/travis-worker-gce-org-prod2.env:
+	$(ENV_GENERATE_CMD) gce-workers production2 | $(ENV_EXPORT_SED) > $(shell pwd)/$@
+
+envs/travis-worker-gce-org-prod3.env:
+	$(ENV_GENERATE_CMD) gce-workers production3 | $(ENV_EXPORT_SED) > $(shell pwd)/$@
+
 envs/travis-worker-gce-org-staging.env:
 	$(ENV_GENERATE_CMD) gce-workers staging | $(ENV_EXPORT_SED) > $(shell pwd)/$@

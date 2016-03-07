@@ -10,21 +10,31 @@ module "gce_org_prod_workers" {
   image = "${atlas_artifact.travis-worker-gce-image.id}"
 }
 
-module "gce_com_prod_workers" {
+module "gce_org_prod2_workers" {
   source = "github.com/travis-infrastructure/tf_gce_travis_worker"
-  instance_count = 10
-  site = "com"
-  environment = "prod"
+  instance_count = 6
+  site = "org"
+  environment = "prod2"
   machine_type = "g1-small"
   zone = "us-central1-b"
   image = "${atlas_artifact.travis-worker-gce-image.id}"
 }
 
-module "gce_org_staging_workers" {
+module "gce_org_prod3_workers" {
   source = "github.com/travis-infrastructure/tf_gce_travis_worker"
-  instance_count = 1
+  instance_count = 6
   site = "org"
-  environment = "staging"
+  environment = "prod3"
+  machine_type = "g1-small"
+  zone = "us-central1-b"
+  image = "${atlas_artifact.travis-worker-gce-image.id}"
+}
+
+module "gce_com_prod_workers" {
+  source = "github.com/travis-infrastructure/tf_gce_travis_worker"
+  instance_count = 10
+  site = "com"
+  environment = "prod"
   machine_type = "g1-small"
   zone = "us-central1-b"
   image = "${atlas_artifact.travis-worker-gce-image.id}"
