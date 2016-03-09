@@ -7,7 +7,7 @@ set -o errexit
 
 if ! command -v terraform ; then
   pushd "${TMPDIR}"
-  curl -sSLO "https://dl.bintray.com/mitchellh/terraform/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+  curl -sSLO "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
   popd
   pushd "${PREFIX}/bin"
   unzip "${TMPDIR}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"

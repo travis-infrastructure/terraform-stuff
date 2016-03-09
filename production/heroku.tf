@@ -3,7 +3,7 @@ provider "heroku" {}
 
 resource "heroku_addon" "rate_limit_redis" {
     app = "travis-production"
-    plan = "heroku-redis:premium-0"
+    plan = "heroku-redis:premium-1"
 }
 
 output "rate_limit_redis_url_env_var" {

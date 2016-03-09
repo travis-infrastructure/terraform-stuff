@@ -16,11 +16,29 @@ nodes/travis-worker-gce-%.json: envs/travis-worker-gce-%.env
 envs/travis-worker-gce-com-prod.env:
 	$(ENV_GENERATE_CMD) --pro gce-workers production | $(ENV_EXPORT_SED) > $(shell pwd)/$@
 
+envs/travis-worker-gce-com-prod2.env:
+	$(ENV_GENERATE_CMD) --pro gce-workers production2 | $(ENV_EXPORT_SED) > $(shell pwd)/$@
+
+envs/travis-worker-gce-com-prod3.env:
+	$(ENV_GENERATE_CMD) --pro gce-workers production3 | $(ENV_EXPORT_SED) > $(shell pwd)/$@
+
 envs/travis-worker-gce-com-staging.env:
 	$(ENV_GENERATE_CMD) --pro gce-workers staging | $(ENV_EXPORT_SED) > $(shell pwd)/$@
 
 envs/travis-worker-gce-org-prod.env:
 	$(ENV_GENERATE_CMD) gce-workers production | $(ENV_EXPORT_SED) > $(shell pwd)/$@
+
+envs/travis-worker-gce-org-prod2.env:
+	$(ENV_GENERATE_CMD) gce-workers production2 | $(ENV_EXPORT_SED) > $(shell pwd)/$@
+
+envs/travis-worker-gce-org-prod3.env:
+	$(ENV_GENERATE_CMD) gce-workers production3 | $(ENV_EXPORT_SED) > $(shell pwd)/$@
+
+envs/travis-worker-gce-org-prod4.env:
+	$(ENV_GENERATE_CMD) gce-workers production4 | $(ENV_EXPORT_SED) > $(shell pwd)/$@
+
+envs/travis-worker-gce-org-prod5.env:
+	$(ENV_GENERATE_CMD) gce-workers production5 | $(ENV_EXPORT_SED) > $(shell pwd)/$@
 
 envs/travis-worker-gce-org-staging.env:
 	$(ENV_GENERATE_CMD) gce-workers staging | $(ENV_EXPORT_SED) > $(shell pwd)/$@
