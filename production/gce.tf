@@ -30,6 +30,26 @@ module "gce_org_prod3_workers" {
   image = "${atlas_artifact.travis-worker-gce-image.id}"
 }
 
+module "gce_org_prod4_workers" {
+  source = "github.com/travis-infrastructure/tf_gce_travis_worker"
+  instance_count = 12
+  site = "org"
+  environment = "prod4"
+  machine_type = "g1-small"
+  zone = "us-central1-b"
+  image = "${atlas_artifact.travis-worker-gce-image.id}"
+}
+
+module "gce_org_prod5_workers" {
+  source = "github.com/travis-infrastructure/tf_gce_travis_worker"
+  instance_count = 12
+  site = "org"
+  environment = "prod5"
+  machine_type = "g1-small"
+  zone = "us-central1-b"
+  image = "${atlas_artifact.travis-worker-gce-image.id}"
+}
+
 module "gce_com_prod_workers" {
   source = "github.com/travis-infrastructure/tf_gce_travis_worker"
   instance_count = 10
