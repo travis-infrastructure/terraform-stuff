@@ -6,5 +6,5 @@ gce.json
 .terraform/
 
 **/envs/*.env
-**/cloud-init/travis-worker*
+**/cloud-init/*
 **/nodes/*.json

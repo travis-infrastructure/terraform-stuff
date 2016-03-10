@@ -27,6 +27,10 @@ clean:
 
 .PHONY: terraform-config
 terraform-config:
-	terraform remote config -backend-config="name=travis-ci/terraform-stuff"
+	terraform remote config -backend=s3 \
+  -backend-config="bucket=travis-terraform-state" \
+  -backend-config="key=terraform-stuff/production.tfstate" \
+  -backend-config="region=us-east-1" \
+  -backend-config="encrypt=true"
 
 include $(shell git rev-parse --show-toplevel)/rules.mk
