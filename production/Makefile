@@ -16,7 +16,9 @@ CLOUD_INITS := \
 	cloud-init/travis-worker-gce-org-prod2 \
 	cloud-init/travis-worker-gce-org-prod3 \
 	cloud-init/travis-worker-gce-com-staging \
-	cloud-init/travis-worker-gce-org-staging
+	cloud-init/travis-worker-gce-org-staging \
+	cloud-init/travis-tmate-edge-org-staging \
+	cloud-init/travis-tmate-edge-org-production
 
 .PHONY: all
 all: $(NODE_JSONS) $(CLOUD_INITS)

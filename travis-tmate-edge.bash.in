@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+set -o errexit
+
+main() {
+  __write_tmate_config
+  __setup_papertrail_rsyslog
+  __write_tmate_ssh_keys
+  __restart_tmate
+}
+
+__restart_tmate() {
+  stop tmate-remote-tmux || true
+  start tmate-remote-tmux || true
+}
+
+__write_tmate_config() {
+  cat > /etc/default/tmate-config <<EOF
+___ENV___
+EOF
+}
+
+__s3_download() {
+  local bucket access_id access_token date signature file
+
+  access_id=$1
+  access_token=$2
+  bucket=$3
+  file=$4
+
+  date="$(LC_ALL=C date -u +"%a, %d %b %Y %X %z")"
+  signature="$(echo -en "GET\n\n\n$date\n/$bucket/$file" | openssl sha1 -binary -hmac $access_token | base64)"
+
+  curl -Ssl -H "Host: $bucket.s3.amazonaws.com" -H "Date: $date" -H "Authorization: AWS $access_id:$signature" https://$bucket.s3.amazonaws.com/$file
+}
+
+__s3_tmate_download() {
+  source /etc/default/tmate-config
+  __s3_download $TRAVIS_TMATE_SSH_KEYS_S3_ACCESS_ID \
+                $TRAVIS_TMATE_SSH_KEYS_S3_ACCESS_TOKEN \
+                $TRAVIS_TMATE_SSH_KEYS_S3_BUCKET \
+                $1
+}
+
+__write_tmate_ssh_keys() {
+  local key_dir=/etc/ssh/tmate-keys
+  mkdir -p $key_dir
+  for f in ssh_host_rsa_key ssh_host_rsa_key.pub ssh_host_ecdsa_key ssh_host_ecdsa_key.pub; do
+    __s3_tmate_download $f > $key_dir/$f
+    chmod 600 $key_dir/$f
+  done
+}
+
+__setup_papertrail_rsyslog() {
+  source /etc/default/tmate-config
+  local pt_port="${TRAVIS_PAPERTRAIL_REMOTE_PORT}"
+
+  if [[ ! "${pt_port}" ]] ; then
+    return
+  fi
+
+  local match='logs.papertrailapp.com:'
+  local repl="\*\.\* @logs.papertrailapp.com:${pt_port}"
+
+  sed -i "/${match}/s/.*/${repl}/" '/etc/rsyslog.d/65-papertrail.conf'
+
+  restart rsyslog || start rsyslog
+}
+
+main "$@"
