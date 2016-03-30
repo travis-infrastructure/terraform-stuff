@@ -6,12 +6,16 @@ main() {
   __write_tmate_config
   __setup_papertrail_rsyslog
   __write_tmate_ssh_keys
+  __write_proxy_config
   __restart_tmate
 }
 
 __restart_tmate() {
   stop tmate-remote-tmux || true
   start tmate-remote-tmux || true
+
+  stop tmate-proxy || true
+  start tmate-proxy || true
 }
 
 __write_tmate_config() {
@@ -49,6 +53,14 @@ __write_tmate_ssh_keys() {
     __s3_tmate_download $f > $key_dir/$f
     chmod 600 $key_dir/$f
   done
+}
+
+__write_proxy_config() {
+  source /etc/default/tmate-config
+  local config_file=/srv/tmate-proxy/releases/*/sys.config
+
+  sed -i "s^TMATE_HMAC_KEY_PLACEHOLDER^$TRAVIS_TMATE_HMAC_KEY^g" $config_file
+  sed -i "s^TMATE_WEBHOOK_URL_PLACEHOLDER^$TRAVIS_TMATE_WEBHOOK_URL^g" $config_file
 }
 
 __setup_papertrail_rsyslog() {
