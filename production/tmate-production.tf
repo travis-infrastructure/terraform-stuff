@@ -4,7 +4,7 @@
 
 resource "aws_route53_record" "tmate-edge-production" {
   zone_id = "${var.external_zone_id}"
-  name = "tmate-production.travisci.net"
+  name = "tmate.travisci.net"
   type = "A"
   ttl = "300"
   records = [
@@ -15,7 +15,7 @@ resource "aws_route53_record" "tmate-edge-production" {
 
 resource "aws_route53_record" "tmate-edge-production-gce" {
   zone_id = "${var.external_zone_id}"
-  name = "tmate-gce-production.travisci.net"
+  name = "tmate-gce.travisci.net"
   type = "A"
   ttl = "300"
   records = ["${google_compute_address.tmate-edge-production-org-ip.address}"]
@@ -23,7 +23,7 @@ resource "aws_route53_record" "tmate-edge-production-gce" {
 
 resource "aws_route53_record" "tmate-edge-production-aws" {
   zone_id = "${var.external_zone_id}"
-  name = "tmate-aws-production.travisci.net"
+  name = "tmate-aws.travisci.net"
   type = "A"
   ttl = "300"
   records = ["${aws_eip.tmate-production-ip.public_ip}"]
@@ -55,8 +55,8 @@ resource "google_compute_instance" "tmate-edge-production-org" {
 
   metadata_startup_script = <<EOT
 #!/usr/bin/env bash
-echo 127.0.1.1 tmate-gce-production.travisci.net tmate-gce-production >> /etc/hosts
-hostname tmate-gce-production
+echo 127.0.1.1 tmate-gce.travisci.net tmate-gce >> /etc/hosts
+hostname tmate-gce
 ${file(format("cloud-init/travis-tmate-edge-org-production"))}
 EOT
 }
@@ -85,8 +85,8 @@ resource "aws_instance" "tmate-edge-aws-production" {
 
   user_data = <<EOT
 #!/usr/bin/env bash
-echo 127.0.1.1 tmate-aws-production.travisci.net tmate-aws-production >> /etc/hosts
-hostname tmate-aws-production
+echo 127.0.1.1 tmate-aws.travisci.net tmate-aws >> /etc/hosts
+hostname tmate-aws
 ${file(format("cloud-init/travis-tmate-edge-org-production"))}
 EOT
 }
