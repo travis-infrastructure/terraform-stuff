@@ -47,10 +47,10 @@ envs/travis-worker-gce-org-staging.env:
 cloud-init/travis-tmate-edge-%: $(TOP)/travis-tmate-edge.bash.in envs/travis-tmate-edge-%.env nodes/travis-tmate-edge-%.json
 	$(RENDER_GCE_TRAVIS_WORKER_CLOUD_INIT) $< $@ > $@
 
-envs/travis-tmate-edge-org-staging.env:
+envs/travis-tmate-edge-staging.env:
 	$(ENV_GENERATE_TMATE_CMD) tmate-edge staging | $(ENV_EXPORT_SED) > $(shell pwd)/$@
 
-envs/travis-tmate-edge-org-production.env:
+envs/travis-tmate-edge-production.env:
 	$(ENV_GENERATE_TMATE_CMD) tmate-edge production | $(ENV_EXPORT_SED) > $(shell pwd)/$@
 
 nodes/travis-tmate-edge-%.json:

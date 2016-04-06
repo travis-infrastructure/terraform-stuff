@@ -8,7 +8,7 @@ resource "aws_route53_record" "tmate-edge-staging" {
   type = "A"
   ttl = "300"
   records = [
-    "${google_compute_address.tmate-edge-staging-org-ip.address}",
+    "${google_compute_address.tmate-edge-staging-ip.address}",
     "${aws_eip.tmate-staging-ip.public_ip}"
   ]
 }
@@ -18,7 +18,7 @@ resource "aws_route53_record" "tmate-edge-staging-gce" {
   name = "tmate-gce-staging.travisci.net"
   type = "A"
   ttl = "300"
-  records = ["${google_compute_address.tmate-edge-staging-org-ip.address}"]
+  records = ["${google_compute_address.tmate-edge-staging-ip.address}"]
 }
 
 resource "aws_route53_record" "tmate-edge-staging-aws" {
@@ -33,7 +33,7 @@ resource "aws_route53_record" "tmate-edge-staging-aws" {
 # GCE
 #
 
-resource "google_compute_instance" "tmate-edge-staging-org" {
+resource "google_compute_instance" "tmate-edge-staging" {
   count = 1
   name = "tmate-edge-staging"
   machine_type = "n1-highcpu-2"
@@ -49,7 +49,7 @@ resource "google_compute_instance" "tmate-edge-staging-org" {
   network_interface {
     network = "default"
     access_config {
-      nat_ip = "${google_compute_address.tmate-edge-staging-org-ip.address}"
+      nat_ip = "${google_compute_address.tmate-edge-staging-ip.address}"
     }
   }
 
@@ -57,12 +57,12 @@ resource "google_compute_instance" "tmate-edge-staging-org" {
 #!/usr/bin/env bash
 echo 127.0.1.1 tmate-gce-staging.travisci.net tmate-gce-staging >> /etc/hosts
 hostname tmate-gce-staging
-${file(format("cloud-init/travis-tmate-edge-org-staging"))}
+${file(format("cloud-init/travis-tmate-edge-staging"))}
 EOT
 }
 
-resource "google_compute_address" "tmate-edge-staging-org-ip" {
-  name = "tmate-edge-staging-org-ip"
+resource "google_compute_address" "tmate-edge-staging-ip" {
+  name = "tmate-edge-staging-ip"
   region = "us-central1"
 }
 
@@ -87,7 +87,7 @@ resource "aws_instance" "tmate-edge-aws-staging" {
 #!/usr/bin/env bash
 echo 127.0.1.1 tmate-aws-staging.travisci.net tmate-aws-staging >> /etc/hosts
 hostname tmate-aws-staging
-${file(format("cloud-init/travis-tmate-edge-org-staging"))}
+${file(format("cloud-init/travis-tmate-edge-staging"))}
 EOT
 }
 
