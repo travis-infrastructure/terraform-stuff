@@ -36,7 +36,7 @@ resource "aws_route53_record" "tmate-edge-staging-aws" {
 resource "google_compute_instance" "tmate-edge-staging" {
   count = 1
   name = "tmate-edge-staging"
-  machine_type = "n1-highcpu-2"
+  machine_type = "${var.tmate_gce_machine_type}"
   zone = "us-central1-b"
   tags = ["tmate-edge"]
 
@@ -73,13 +73,13 @@ resource "google_compute_address" "tmate-edge-staging-ip" {
 resource "aws_instance" "tmate-edge-aws-staging" {
   ami = "${atlas_artifact.tmate-edge-aws-image.metadata_full.ami_id}"
 
-  instance_type = "c4.large"
+  instance_type = "${var.tmate_aws_machine_type}"
   tags {
     Name = "tmate-edge-staging"
   }
 
-  availability_zone = "us-east-1b"
-  subnet_id = "subnet-a8a3dcdf"
+  availability_zone = "${var.aws_public_subnet_az}"
+  subnet_id = "${var.aws_public_subnet_id}"
 
   vpc_security_group_ids = ["${aws_security_group.tmate-edge.id}"]
 

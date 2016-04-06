@@ -1,3 +1,6 @@
+variable "tmate_aws_machine_type"     { default = "c4.large" }
+variable "tmate_gce_machine_type"     { default = "n1-highcpu-2" }
+
 resource "atlas_artifact" "tmate-edge-gce-image" {
   name = "travis-ci/tmate-edge"
   type = "google.image"
@@ -22,7 +25,7 @@ resource "google_compute_firewall" "tmate-edge" {
 }
 
 resource "aws_security_group" "tmate-edge" {
-  vpc_id = "vpc-f4188191"
+  vpc_id = "${var.aws_vpc_id}"
   name = "allow_all"
 
   ingress {
