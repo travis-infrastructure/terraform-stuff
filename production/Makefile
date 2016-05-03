@@ -16,7 +16,9 @@ CLOUD_INITS := \
 	cloud-init/travis-worker-gce-org-prod2 \
 	cloud-init/travis-worker-gce-org-prod3 \
 	cloud-init/travis-worker-gce-com-staging \
-	cloud-init/travis-worker-gce-org-staging
+	cloud-init/travis-worker-gce-org-staging \
+	cloud-init/travis-tmate-edge-staging \
+	cloud-init/travis-tmate-edge-production
 
 .PHONY: all
 all: $(NODE_JSONS) $(CLOUD_INITS)
@@ -27,6 +29,10 @@ clean:
 
 .PHONY: terraform-config
 terraform-config:
-	terraform remote config -backend-config="name=travis-ci/terraform-stuff"
+	terraform remote config -backend=s3 \
+  -backend-config="bucket=travis-terraform-state" \
+  -backend-config="key=terraform-stuff/production.tfstate" \
+  -backend-config="region=us-east-1" \
+  -backend-config="encrypt=true"
 
 include $(shell git rev-parse --show-toplevel)/rules.mk
