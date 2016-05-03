@@ -1,5 +1,7 @@
 provider "google" {}
 
+variable "gce_worker_image_id" {}
+
 module "gce_org_prod_workers" {
   source = "github.com/travis-infrastructure/tf_gce_travis_worker"
   instance_count = 6
@@ -7,7 +9,7 @@ module "gce_org_prod_workers" {
   environment = "prod"
   machine_type = "g1-small"
   zone = "us-central1-b"
-  image = "${atlas_artifact.travis-worker-gce-image.id}"
+  image = "${var.gce_worker_image_id}"
 }
 
 module "gce_org_prod2_workers" {
@@ -17,7 +19,7 @@ module "gce_org_prod2_workers" {
   environment = "prod2"
   machine_type = "g1-small"
   zone = "us-central1-b"
-  image = "${atlas_artifact.travis-worker-gce-image.id}"
+  image = "${var.gce_worker_image_id}"
 }
 
 module "gce_org_prod3_workers" {
@@ -27,7 +29,7 @@ module "gce_org_prod3_workers" {
   environment = "prod3"
   machine_type = "g1-small"
   zone = "us-central1-b"
-  image = "${atlas_artifact.travis-worker-gce-image.id}"
+  image = "${var.gce_worker_image_id}"
 }
 
 module "gce_org_prod4_workers" {
@@ -37,7 +39,7 @@ module "gce_org_prod4_workers" {
   environment = "prod4"
   machine_type = "g1-small"
   zone = "us-central1-b"
-  image = "${atlas_artifact.travis-worker-gce-image.id}"
+  image = "${var.gce_worker_image_id}"
 }
 
 module "gce_org_prod5_workers" {
@@ -47,7 +49,7 @@ module "gce_org_prod5_workers" {
   environment = "prod5"
   machine_type = "g1-small"
   zone = "us-central1-b"
-  image = "${atlas_artifact.travis-worker-gce-image.id}"
+  image = "${var.gce_worker_image_id}"
 }
 
 module "gce_com_prod_workers" {
@@ -57,7 +59,7 @@ module "gce_com_prod_workers" {
   environment = "prod"
   machine_type = "g1-small"
   zone = "us-central1-b"
-  image = "${atlas_artifact.travis-worker-gce-image.id}"
+  image = "${var.gce_worker_image_id}"
 }
 
 module "gce_com_prod2_workers" {
@@ -67,7 +69,7 @@ module "gce_com_prod2_workers" {
 	environment = "prod2"
 	machine_type = "g1-small"
 	zone = "us-central1-b"
-	image = "${atlas_artifact.travis-worker-gce-image.id}"
+	image = "${var.gce_worker_image_id}"
 }
 
 module "gce_com_prod3_workers" {
@@ -77,7 +79,7 @@ module "gce_com_prod3_workers" {
 	environment = "prod3"
 	machine_type = "g1-small"
 	zone = "us-central1-b"
-	image = "${atlas_artifact.travis-worker-gce-image.id}"
+	image = "${var.gce_worker_image_id}"
 }
 
 resource "google_compute_instance" "ubuntu_trusty_micro_playground" {
