@@ -2,6 +2,12 @@
 
 zOMG it's Terraform stuff!
 
+## Status
+
+This repo is in the process of being replaced by [terraform-config](https://github.com/travis-infrastructure/terraform-config).
+
+## What is this?
+
 There are some significant parts of what go into a successful `terraform apply`
 that *do not* live in this repository.  Inspection of the
 [`Makefile`](./Makefile) will show that files in `./cloud-init` expected by the
