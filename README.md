@@ -1,10 +1,9 @@
-# terraform-stuff
+# This Repo has been Depcrecated 
 
-zOMG it's Terraform stuff!
 
 ## Status
 
-This repo is in the process of being replaced by [terraform-config](https://github.com/travis-infrastructure/terraform-config).
+This repo is now deprecated. Please go to [terraform-config](https://github.com/travis-infrastructure/terraform-config).
 
 ## What is this?
 
